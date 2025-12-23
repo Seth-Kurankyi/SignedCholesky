@@ -13,6 +13,21 @@ import Base: require_one_based_indexing, copy, show
 export signedcholesky, signedcholesky!
 
 
+
+
+"""
+    SignedCholesky{T,S} <: Factorization
+
+A factorization object representing the signed Cholesky decomposition of a matrix.
+For a symmetric/Hermitian matrix M, computes F and signs S such that M ≈ F * Diagonal(S) * F'.
+
+# Fields
+- `factors::S`: Storage for the triangular factor F
+- `signs::Vector{Int8}`: Sign corrections for each diagonal element
+- `uplo::Char`: 'L' for lower or 'U' for upper triangular storage
+- `info::BlasInt`: Status code (0 for success)
+"""
+
 struct SignedCholesky{T,S<:AbstractMatrix} <: Factorization{T}
     factors::S
     signs::Vector{Int8}
