@@ -1,18 +1,8 @@
-module SignedCholPiv
+
 
 ##########################
 # Signed Cholesky Factorization #
 ##########################
-
-using LinearAlgebra 
-
-import LinearAlgebra: checksquare, RealHermSymComplexHerm, 
-        BlasInt, checknonsingular, eigencopy_oftype
-import Base: require_one_based_indexing, copy, show
-
-export signedcholesky, signedcholesky!
-
-# --------------  Pivoted Signed Cholesky ----------------
 
 
 struct SignedCholeskyPivoted{T,S<:AbstractMatrix,P<:AbstractVector{<:Integer}} <: Factorization{T}
@@ -74,7 +64,7 @@ Base.propertynames(F::SignedCholeskyPivoted, private::Bool=false) =
     (:U, :L, :p, :P, (private ? fieldnames(typeof(F)) : ())...)
 
 
-adjoint(C::Union{SignedCholesky,SignedCholeskyPivoted}) = C
+
 
 
 function AbstractMatrix(F::SignedCholeskyPivoted)
@@ -106,72 +96,30 @@ end
 
 # generic computation for non-BLAS/LAPACK element types 
 
-# sign extraction from a 2 x2 symmetric matrix 
 
-@inline function _sign2x2(a11, a12, a22)
-    # matrix = [a11 a12; a12' a22]
-    tr = a11 + a22
-    det = a11*a22 - abs2(a12)
-    if det > 0
-        if tr > 0
-            return Int8(1), Int8(1)
-        else
-            return Int8(-1), Int8(-1)
-        end
-    elseif det < 0
-        return Int8(1), Int8(-1)
-    else
-        return Int8(0), tr > 0 ? Int8(1) : (tr < 0 ? Int8(-1) : Int8(0)) 
-    end
+
+function signedcholesky!(A::RealHermSymComplexHerm, ::RowMaximum; tol = 0.0, check::Bool = true)
+    F, S, p, rank = _sgndchol_pivoted!(A.data; tol)
+    return SignedCholeskyPivoted(F.data, S, A.uplo, p, rank, tol, BlasInt(0))
 end
+@deprecate signedcholesky!(A::RealHermSymComplexHerm, ::Val{true}; kwargs...) signedcholesky!(A, RowMaximum(); kwargs...) false
 
-function _sgndchol_pivoted_generic!(A::AbstractMatrix{T}, rowmax::AbstractVector{T};
-                                    tol::Real=0.0) where T<:Real
-    n = size(A,1)
-    require_one_based_indexing(A)
-    S = Vector{Int8}(undef, n)
-    p = collect(1:n)
-    rank = 0
 
-    for k = 1:n
-        # pivoting
-        maxindex = findmax(rowmax[k:n])[2] + k - 1
-        if maxindex != k
-            A[:, (k, maxindex)] .= A[:, (maxindex, k)]
-            A[(k, maxindex), :] .= A[(maxindex, k), :]
-            p[(k, maxindex)] .= p[(maxindex, k)]
-            rowmax[(k, maxindex)] .= rowmax[(maxindex, k)]
-        end
-        # compute sign
-        akk = A[k,k]
-        for j = 1:k-1
-            akk -= S[j]*A[j,k]^2
-        end
-        if abs(akk) <= tol
-            S[k] = Int8(0)
-        else
-            S[k] = akk > 0 ? Int8(1) : Int8(-1)
-            rank += 1
-            # update trailing submatrix and rowmax
-            for i = k+1:n
-                aik = A[k,i]
-                for j = 1:k-1
-                    aik -= S[j]*A[j,k]*A[j,i]
-                end
-                A[k,i] = aik
-                A[i,k] = aik # symmetry
-                A[i,i] -= S[k]*aik^2
-                rowmax[i] = maximum(abs.(A[i, k+1:end]))
-            end
-        end
-    end
-    return (S, p, rank)
+
+
+function AbstractMatrix(F::SignedCholeskyPivoted)
+    L = F.L
+    S = Diagonal(F.signs)
+    P = F.P
+    return P' * (L * S * L') * P
 end
 
 
+struct SignedCholeskyError <: Exception
+    msg::String
+end
+
+Base.showerror(io::IO, e::SignedCholeskyError) = print(io, e.msg)
 
 
 
-
-
-end #module 
