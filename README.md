@@ -23,3 +23,12 @@ This factorization is useful when:
 ### Installation ###
 
 Currently, the package is not registered. Install directly from a local path or repository:
+```julia
+pkg> add /path/to/SignedCholesky
+```
+or
+
+```julia
+pkg> add https://github.com/Seth-Kurankyi/SignedCholesky.jl
+```
+
