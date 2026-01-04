@@ -34,11 +34,6 @@ Base.iterate(F::SignedCholeskyPivoted,::Val{1}) = (F.S, Val(2))
 Base.iterate(F::SignedCholeskyPivoted,::Val{2}) = nothing
 
 
-### Non BLAS/LAPACK element types (generic). Since generic fallback for pivoted signed Cholesky
-### is not implemented yet we throw an error
-signedcholesky!(A::RealHermSymComplexHerm{<:Real}, ::RowMaximum; tol = 0.0, check::Bool = true) =
-    throw(ArgumentError("generic pivoted signed Cholesky factorization is not implemented yet"))
-@deprecate signedcholesky!(A::RealHermSymComplexHerm{<:Real}, ::Val{true}; kwargs...) signedcholesky!(A, RowMaximum(); kwargs...) false
 
 function getproperty(C::SignedCholeskyPivoted{T}, d::Symbol) where {T}
     Cfactors = getfield(C, :factors)
@@ -98,12 +93,17 @@ end
 
 
 
-function signedcholesky!(A::RealHermSymComplexHerm, ::RowMaximum; tol = 0.0, check::Bool = true)
-    F, S, p, rank = _sgndchol_pivoted!(A.data; tol)
-    return SignedCholeskyPivoted(F.data, S, A.uplo, p, rank, tol, BlasInt(0))
-end
-@deprecate signedcholesky!(A::RealHermSymComplexHerm, ::Val{true}; kwargs...) signedcholesky!(A, RowMaximum(); kwargs...) false
+# function signedcholesky!(A::RealHermSymComplexHerm, ::RowMaximum; tol = 0.0, check::Bool = true)
+#     F, S, p, rank = _sgndchol_pivoted!(A.data; tol)
+#     return SignedCholeskyPivoted(F.data, S, A.uplo, p, rank, tol, BlasInt(0))
+# end
+# @deprecate signedcholesky!(A::RealHermSymComplexHerm, ::Val{true}; kwargs...) signedcholesky!(A, RowMaximum(); kwargs...) false
 
+### Non BLAS/LAPACK element types (generic). Since generic fallback for pivoted signed Cholesky
+### is not implemented yet we throw an error
+signedcholesky!(A::RealHermSymComplexHerm{<:Real}, ::RowMaximum; tol = 0.0, check::Bool = true) =
+    throw(ArgumentError("generic pivoted signed Cholesky factorization is not implemented yet"))
+@deprecate signedcholesky!(A::RealHermSymComplexHerm{<:Real}, ::Val{true}; kwargs...) signedcholesky!(A, RowMaximum(); kwargs...) false
 
 
 
