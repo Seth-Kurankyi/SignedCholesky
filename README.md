@@ -62,9 +62,6 @@ Fp = signedcholesky(A, Pivoted()) #pivot version
 L = Fp.L        # triangular factor
 S = Fp.S        # diagonal signature matrix
 p = Fp.p        # pivot permutation
-
-# Reconstruction
-A_reconstructed = Matrix(F)
 ```
 ### Error Handling
 
