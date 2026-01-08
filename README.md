@@ -17,11 +17,9 @@ where
 
 The algorithm **restricts itself to 1×1 pivots**. If numerical stability would require a 2×2 pivot, the factorization terminates and reports failure.
 
-
-
-This factorization is useful when:
+<!-- This factorization is useful when:
 *	the matrix is not positive definite
-*	but still admits an L S Lᵀ structure using 1×1 pivots only
+*	but still admits an L S Lᵀ structure using 1×1 pivots only -->
 
 Typical use cases include:
 * Indefinite quadratic forms
@@ -46,3 +44,30 @@ Currently, the package is not registered. Install directly from a local path or 
 pkg> add https://github.com/Seth-Kurankyi/SignedCholesky.jl
 ```
 
+### Basic Usage 
+```julia
+using SignedCholesky, LinearAlgebra
+
+A = [ 2.0  1.0;
+      1.0 -1.0 ]
+
+
+F = signedcholesky(A) #no pivot version
+
+L = F.L        # triangular factor
+S = F.S        # diagonal signature matrix
+
+Fp = signedcholesky(A, Pivoted()) #pivot version
+
+L = Fp.L        # triangular factor
+S = Fp.S        # diagonal signature matrix
+p = Fp.p        # pivot permutation
+
+# Reconstruction
+A_reconstructed = Matrix(F)
+```
+### Error Handling
+
+If the factorization fails, one of the following conditions is reported:
+* Singular matrix: a zero pivot was encountered
+* Non-factorizable with 1×1 pivots: a stable factorization would require a 2×2 pivot
