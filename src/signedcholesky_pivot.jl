@@ -1,22 +1,4 @@
 
-# module SignedCholeskyPivot 
-
-# # --------------
-# # Dependencies
-# # --------------
-# using LinearAlgebra
-
-# import LinearAlgebra: 
-#         checksquare, 
-#         RealHermSymComplexHerm, 
-#         BlasInt,  
-#         eigencopy_oftype
-
-# import Base: 
-#         require_one_based_indexing, 
-#         copy, 
-#         show
-
 ##########################
 # Signed Cholesky Factorization #
 ##########################
