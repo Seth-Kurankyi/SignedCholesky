@@ -7,13 +7,20 @@ This Julia package implements a **signed Cholesky factorization** for real symme
 ### Overview
 For a real symmetric or complex Hermitian matrix $A$, the signed Cholesky factorization computes
 
-$$A \approx  P^{\top} \cdot L \cdot  S \cdot L^{\top} \cdot P \quad \text{or} \quad A \approx  P^{\top} \cdot U^{\top} \cdot  S \cdot U \cdot P$$
+$$A \approx  L \cdot  S \cdot L^{\top} \quad \text{or} \quad A \approx  U^{\top} \cdot  S \cdot U $$ 
 
 where
 * $L$ / $U$ is triangular
-* $S$ is a diagonal matrix with entries in {-1,0,+1}
-* $P$ is a permutation matrix arising from symmetric pivoting.
+* $S$ is a diagonal matrix with entries in {-1,0,+1}. 
 
+
+For the pivoted variant, the factorization takes the form
+
+$$A \approx  P^{\top} \cdot L \cdot  S \cdot L^{\top} \cdot P \quad \text{or} \quad A \approx  P^{\top} \cdot U^{\top} \cdot  S \cdot U \cdot P$$
+
+where
+* $P$ is a permutation matrix arising from symmetric pivoting.
+* the pivoting is used to improve numerical stability and to expose the inertia of $A$.
 
 The algorithm **restricts itself to 1×1 pivots**. In the pivoted variant, the matrix is scanned to identify a permutation such that the leading $2\times2$ principal block admits a valid signed Cholesky step. If no such permutation exists --i.e. if numerical stability would require a genuine $2\times2$ pivot—the factorization terminates and reports failure rather than switching pivot size.
 
