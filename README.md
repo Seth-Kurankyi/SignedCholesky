@@ -43,7 +43,7 @@ Typical use cases include:
 
 Currently, the package is not registered. Install directly from a local path or repository:
 ```julia
-pkg> add https://github.com/Seth-Kurankyi/SignedCholesky.jl
+pkg> add https://github.com/sethkasante/SignedCholesky.jl
 ```
 
 ### Basic Usage 
