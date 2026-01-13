@@ -328,7 +328,7 @@ end
 Base.showerror(io::IO, e::ZeroPivotException) =
     print(io,"Unpivoted signed Cholesky failed at pivot index ",
             e.k, ".\n",
-            "Try a pivoted factorization using signedcholesky(M,Pivoted()).")
+            "Try a pivoted factorization using `signedcholesky(M,Pivoted())`.")
 
 
 checkzeropivots(info::BlasInt) =

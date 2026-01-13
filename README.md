@@ -57,11 +57,9 @@ pkg> add https://github.com/sethkasante/SignedCholesky.jl
 ```julia
 using SignedCholesky, LinearAlgebra
 
-A = [ 2.0  1.0;
-      1.0 -1.0 ]
+A = [ 2 1; 1 -1 ]
 
-
-F = signedcholesky(A) #no pivot version
+F = signedcholesky(A) #no pivot version (default)
 
 L = F.L        # triangular factor
 S = F.S        # diagonal signature matrix
@@ -75,5 +73,5 @@ p = Fp.p        # pivot permutation
 ### Error Handling
 
 If the factorization fails, one of the following conditions is reported:
-* Singular matrix: a zero pivot was encountered
 * Non-factorizable with 1×1 pivots: a stable factorization would require a 2×2 pivot
+* Singular matrix: a zero pivot was encountered

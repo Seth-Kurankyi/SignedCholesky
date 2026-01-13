@@ -168,19 +168,18 @@ function Base.showerror(io::IO, e::SignedCholPivotError)
     if e.info < 0
         print(io,
             "SignedCholesky failed at pivot $k:\n",
-            "Matrix is singular (a zero pivot encountered).\n",
-            "Factorization L*S*Lᵀ does not exist.\n"
+            "Matrix is singular (a zero pivot encountered).\n"
         )
     elseif e.info > 0
         print(io,
             "SignedCholesky failed at pivot $k:\n",
-            "Matrix is not factorizable as F*S*Fᵀ in stable manner using 1×1 signed pivots.\n",
-            "It may be singular or may require a 2×2 pivot.\n"
+            "Matrix is non-factorizable with 1×1 pivots: a stable factorization would require a 2×2 pivot\n"
         )
     else
         print(io, "SignedCholesky error (unexpected info = 0).")
     end
 end
+
 
 function _check_pivoted_info(info::BlasInt)
     info == 0 && return nothing
