@@ -164,7 +164,7 @@ Return `true` if the factorized matrix is positive definite.
 This is equivalent to all signs being `+1`.
 """
 function isposdef(F)
-    _check_success(F)
+    # _check_success(F)
     @inbounds for s in F.signs
         s == 1 || return false
     end

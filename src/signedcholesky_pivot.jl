@@ -331,7 +331,6 @@ function _sgndchol_pivoted!(M::AbstractMatrix{T}) where T
             end
         end
 
-
         #schur complement
         for i = 1:k - 1
             Mkk -= S[i] * (realdiag ? abs2(M[k,i]) : M[k,i]*M[k,i]')
