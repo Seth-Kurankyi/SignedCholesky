@@ -3,7 +3,7 @@
 
 This Julia package implements a **signed Cholesky factorization** for real symmetric and complex Hermitian matrices. `SignedCholesky` generalizes the standard Cholesky factorization to **indefinite but factorizable matrices**, while preserving a simple triangular–diagonal–triangular structure using only **1×1 pivots**.
 
-This package complements [`Cholesky`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.Cholesky) and [`BunchKaufman`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.BunchKaufman) factorizations.
+This package complements [`Cholesky`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.Cholesky) and [`BunchKaufman`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.BunchKaufman) factorizations in `LinearAlgebra` package. 
 
 ### Overview
 For a real symmetric or complex Hermitian matrix $A$, the signed Cholesky factorization computes
