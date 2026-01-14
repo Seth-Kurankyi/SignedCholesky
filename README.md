@@ -1,26 +1,26 @@
 
 # SignedCholesky.jl
 
-This Julia package implements a **signed Cholesky factorization** for real symmetric and complex Hermitian matrices. `SignedCholesky` generalizes the standard Cholesky factorization to **indefinite but factorizable matrices**, while preserving a simple triangular–diagonal–triangular structure using only **1×1 pivots**.
+[![CI](https://img.shields.io/badge/CI-pending-lightgrey)]()
+[![Julia Nightly](https://img.shields.io/badge/Julia-Nightly-blue)]()
+[![Codecov](https://img.shields.io/badge/codecov-pending-lightgrey)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)]()
 
-This package complements [`Cholesky`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.Cholesky) and [`BunchKaufman`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.BunchKaufman) factorizations in `LinearAlgebra` package. 
+`SignedCholesky.jl` is a **Julia package** for performing **signed Cholesky factorizations** of real symmetric and complex Hermitian matrices.  
+It extends the standard Cholesky factorization to **indefinite matrices** while preserving a simple *triangular–diagonal–triangular structure* using only **1×1 pivots**, making it a lightweight alternative to full Bunch-Kaufman factorization.
+
+This package complements Julia’s built-in [`Cholesky`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.Cholesky) and [`BunchKaufman`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.BunchKaufman) factorizations in `LinearAlgebra` package.
+
+
 
 ### Overview
-For a real symmetric or complex Hermitian matrix $A$, the signed Cholesky factorization computes
+For a real symmetric or complex Hermitian matrix $A$, the SignedCholesky factorization provides:
 
-$$A \approx  L \cdot  S \cdot L^{\top} \quad \text{or} \quad A \approx  U^{\top} \cdot  S \cdot U $$ 
+- **Unpivoted** signed Cholesky (by default): `A ≈ L * S * Lᵀ` or `A ≈ Uᵀ * S * U`  
+- **Pivoted** signed Cholesky: `A ≈ Pᵀ * L * S * Lᵀ * P` or `A[p,p] ≈ L * S * Lᵀ` for matrices with positive or negative pivots  
+- **Derived linear algebra operations**: determinant, log-determinant, and inertia checks
 
-where
-* $L$ / $U$ is triangular
-* $S$ is a diagonal matrix with entries in {-1,+1}. 
-
-For the pivoted variant, the factorization takes the form
-
-$$A \approx  P^{\top} \cdot L \cdot  S \cdot L^{\top} \cdot P \quad \text{or} \quad A[p,p] \approx  L\cdot  S \cdot L^{top} $$
-
-where
-* $P$ is a permutation matrix, $p$ is a permutation vector arising from symmetric pivoting.
-* the pivoting is used to improve numerical stability and to expose the inertia of $A$.
+where $L$ / $U$ is (Upper / Lower) triangular, $P$ is a permutation matrix arising from symmetric pivoting, and $S$ is a diagonal matrix with entries in {-1,+1}.
 
 The algorithm **restricts itself to 1×1 pivots**. In the pivoted variant, the matrix is scanned to identify a permutation such that the leading $2\times2$ principal block admits a valid signed Cholesky step. If no such permutation exists --i.e. if numerical stability would require a genuine $2\times2$ pivot—the factorization terminates and reports failure rather than switching pivot size.
 
@@ -81,7 +81,7 @@ The factorization fails if the matrix is non-factorizable with 1×1 pivots. The 
 
 | Feature | Cholesky | SignedCholesky | Bunch–Kaufman |
 |-------|----------|----------------|---------------|
-| Matrix type| Hermitian, Positive definite | Hermitian, Symmetric (1×1- pivot factorizable)| Hermitian, Symmetric |
+| Matrix type| Hermitian, Positive-definite | Hermitian, Symmetric (1×1- pivot factorizable)| Hermitian, Symmetric |
 | Factorization form | `A = L Lᵀ` | `A = L S Lᵀ` | `A = L D Lᵀ` |
 | Diagonal structure | Positive diagonal | `S ∈ {−1,+1}` | Block diagonal  $(1\times 1, 2\times 2)$ |
 | Determinant | Easy | Easy and exact | More involved |
