@@ -82,8 +82,8 @@ The factorization fails if the matrix is non-factorizable with 1×1 pivots. The 
 | Feature | Cholesky | SignedCholesky | Bunch–Kaufman |
 |-------|----------|----------------|---------------|
 | Matrix type| Hermitian, Positive definite | Hermitian, Symmetric | Hermitian Symmetric |
-| Factorization form | `A = L Lᵀ` | `A = L S Lᵀ` | `A = L D Lᵀ` |
-| Diagonal structure | Positive diagonal | `S ∈ {−1,0,+1}` | Block diagonal  (1×1, 2×2) |
+| Factorization form | `$A = L \, L^{top}$` | `$A = L\, S\, L^{top}$` | `$A = L\, D\, L^{top}$` |
+| Diagonal structure | Positive diagonal | `$S \in {−1,+1}$` | Block diagonal  $(1\times 1, 2\times 2)$ |
 | Determinant | Easy | Easy and exact | More involved |
 | Inertia / signature | Trivial | Trivial (exact) | Trivial |
 | Numerical robustness | High (PD only) | Moderate | High |
