@@ -40,8 +40,7 @@ import Base:
         copy, 
         show,
         permute!,
-        invpermute!,
-        *
+        invpermute!
 
 #--- Include files ----
 

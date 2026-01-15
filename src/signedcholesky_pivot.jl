@@ -200,22 +200,27 @@ end
 Find and permute a pair (i,j) such that the leading 2×2 block is nonsingular.
 The larger-magnitude diagonal is placed first.
 """
-function _find_first_pair!(M::AbstractMatrix{T},piv,tol) where T
+function _find_first_pair!(M::AbstractMatrix{T}, piv, tol) where T
 
     n = checksquare(M)
     realdiag = T <: Complex
 
     @inbounds for i in 1:n-1
-        ai = realdiag ? real(M[i,i]) : M[i,i] # force
+        ai = realdiag ? real(M[i,i]) : M[i,i]
+
         for j in i+1:n
-            aj = realdiag ? real(M[j,j]) : M[j,j]
+            aj  = realdiag ? real(M[j,j]) : M[j,j]
             bij = M[i,j]
+
             det = ai*aj - bij*bij'
 
-            if abs(det) > tol
-                # Decide ordering: larger diagonal first
+            # --- scale to test if 1x1 pivot is stable ---
+            scale = abs(ai*aj) + abs(bij)^2
+
+            if abs(det) > tol * scale
+                # ordering and swaps unchanged
                 p1, p2 = abs(ai) ≥ abs(aj) ? (i,j) : (j,i)
-                # perform swaps 
+
                 if p1 != 1
                     _sym_swap!(M, 1, p1)
                     piv[1], piv[p1] = piv[p1], piv[1]
@@ -231,7 +236,6 @@ function _find_first_pair!(M::AbstractMatrix{T},piv,tol) where T
 
     return false
 end
-
 
 """ 
     _sgndchol_pivoted!(M::AbstractMatrix{T}) where T
@@ -252,7 +256,7 @@ function _sgndchol_pivoted!(M::AbstractMatrix{T}) where T
     abs1 = T <: Real ? abs : cabs1
     
     # robust tolerance
-    tol = T <: AbstractFloat ? max(floatmin(T), eps(real(T))) : T(0) 
+    tol = T <: AbstractFloat ? sqrt(eps(real(T))) : T(0) 
 
     nomM = maximum(abs.(M))
 

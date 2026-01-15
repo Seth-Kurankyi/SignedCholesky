@@ -2,7 +2,7 @@
 # Tests for signedcholesky
 
 using Test
-# using LinearAlgebra
+using LinearAlgebra
 
 
 
@@ -14,7 +14,7 @@ using Test
     A = [4.0 2.0; 2.0 3.0]
     F = signedcholesky(A)
 
-    @test issuccess(F)
+    @test SignedCholesky.issuccess(F)
     @test F.s == [1, 1]
     @test F.L * F.S * F.L' ≈ A
 
@@ -26,19 +26,9 @@ using Test
 
     F = signedcholesky(B)
 
-    @test issuccess(F)
+    @test SignedCholesky.issuccess(F)
     @test sort(F.s) == [-1, 1]
     @test F.L * F.S * F.L' ≈ B
-
-    # --------------------------------------------------
-    # Diagonal indefinite
-    # --------------------------------------------------
-#     D = Diagonal([3.0, -2.0, 5.0])
-#     F = signedcholesky(Matrix(D))
-
-#     @test F.s == Int8[1, -1, 1]
-    # @test Matrix(F) ≈ D
-
 end
 
 
@@ -64,14 +54,14 @@ end
 
 end
 
-@testset "Linear algebra operations" begin
+@testset "Linear algebra utilities" begin
 
     A = [3.0 1.0;
          1.0 -2.0]
 
     F = signedcholesky(A)
 
-    @test det(F) ≈ LinearAlgebra.det(A)
+    @test SignedCholesky.det(F) ≈ LinearAlgebra.det(A)
 
     pos, neg, zero = inertia(F)
     eigs = eigvals(A)
@@ -88,6 +78,6 @@ end
 
     F = signedcholesky(A)
 
-    @test issuccess(F)
+    @test SignedCholesky.issuccess(F)
     @test Matrix(F) ≈ Matrix(A)
 end

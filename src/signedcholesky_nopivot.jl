@@ -125,23 +125,27 @@ Compute signed Cholesky decomposition of a scalar.
 # Returns
 - A tuple (factor, sign, info) where sign ∈ {-1, 0, 1}.
 """
-# _sgndchol!. Internal methods for calling unpivoted signed Cholesky
-
-function _sgndchol!(x::T, normA::Real=one(T)) where T <: Number
+# _sgndchol!. Internal methods for calling pivoted and unpivoted signed Cholesky
+function _sgndchol!(x::T, normA::Real = one(real(T))) where T <: Number
     rx = real(x)
     ax = abs(rx)
 
-    # relative tolerance scaled to matrix magnitude
-    tol = max(eps(T) * normA, floatmin(T))
+    # tolerance consistent with LAPACK
+    tol = if T <: AbstractFloat || T <: Complex{<:AbstractFloat}
+        eps(real(T)) * normA
+    else
+        zero(real(T))   # exact arithmetic → only true zero is zero
+    end
 
-    # treat tiny pivots as zero
-    if ax <= tol
+    if ax <= tol  # treat tiny pivots as zero
         return (zero(x), Int8(0), BlasInt(1))
     end
 
     s  = rx > 0 ? Int8(1) : Int8(-1)
     fx = sqrt(ax)
-    fval  = convert(promote_type(typeof(x), typeof(fx)), fx)
+
+    fval = convert(promote_type(typeof(x), typeof(fx)), fx)
+
     return (fval, s, BlasInt(0))
 end
 
