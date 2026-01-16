@@ -2,7 +2,7 @@
 #signedcholesky_pivot.jl
 
 ##########################
-# Signed Cholesky Factorization  with Pivoting#
+# Signed Cholesky Factorization with Pivoting#
 ##########################
 
 

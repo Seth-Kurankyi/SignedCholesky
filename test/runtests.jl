@@ -3,6 +3,7 @@
 
 using Test
 using LinearAlgebra
+using signedcholesky
 
 
 
