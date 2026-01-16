@@ -25,7 +25,8 @@ The algorithm **restricts itself to 1×1 pivots**. In the pivoted variant, the m
 
 Currently, the package is not registered. Install directly from a local path or repository:
 ```julia
-pkg> add https://github.com/sethkasante/SignedCholesky.jl
+using Pkg
+Pkg.add("SignedCholesky")
 ```
 
 ### Basic Usage 
@@ -34,16 +35,19 @@ using SignedCholesky
 
 A = [ 2 1; 1 -1 ]
 
-F = signedcholesky(A) #no pivot version (default)
+F = signedcholesky(A) #no-pivot version (default)
+L = F.L        # Lower triangular matrix
+S = F.s        # diagonal signature vector
 
-L = F.L        # triangular factor
-S = F.S        # diagonal signature matrix
+# Pivoted version 
+Fp = signedcholesky(A, Pivoted()) 
+fL,fs,fp = Fp   # triangular factor, sign vector, permutation vector
 
-Fp = signedcholesky(A, Pivoted()) #pivot version
 
-L = Fp.L        # triangular factor
-S = Fp.S        # diagonal signature matrix
-p = Fp.p        # pivot permutation
+# Linear Algebra
+inertia(Fp) #inertia
+det(Fp) # determinant
+x = Fp \ [1.0, 2.0] # linear solve 
 ```
 <!-- 
 
