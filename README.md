@@ -79,7 +79,7 @@ The factorization fails if the matrix is non-factorizable with 1×1 pivots. The 
 |-------|----------|----------------|---------------|
 | Matrix type| Hermitian, Positive-definite | Hermitian, Symmetric (1×1- pivot factorizable)| Hermitian, Symmetric |
 | Factorization form | `A = L Lᵀ` | `A = L S Lᵀ` | `A = L D Lᵀ` |
-| Diagonal structure | Positive diagonal | `S ∈ {−1,+1}` | Block diagonal  $(1\times 1, 2\times 2)$ |
+| Diagonal structure | Positive diagonal | `S ∈ {−1,+1}` | Block diagonal  (1×1, 2×2) |
 | Determinant | Easy | Easy and exact | More involved |
 | Inertia / signature | Trivial | Trivial (exact) | Trivial |
 | Numerical robustness | High (PD only) | Moderate | High |
