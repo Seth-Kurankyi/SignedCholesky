@@ -33,7 +33,14 @@ import LinearAlgebra:
         RealHermSymComplexHerm, 
         BlasInt,  
         eigencopy_oftype,
-        inertia
+        inertia,
+        det,
+        logdet,
+        logabsdet,
+        inertia,
+        isposdef,
+        ldiv!
+
 
 import Base: 
         require_one_based_indexing, 
@@ -67,8 +74,7 @@ export
     logabsdet,
     inertia,
     isposdef,
-    ldiv!,
-    mul!
+    ldiv!
 
 # Version / internal helpers (optional)
 # const _SIGNEDCHOL_VERSION = v"0.1.0"
