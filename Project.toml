@@ -1,7 +1,7 @@
 name = "SignedCholesky"
 uuid = "50dbd362-918f-47d7-a50f-7fe6628962b9"
 authors = ["Seth K Asante <seth.kurankyi@gmail.com>"]
-version = "0.1.1"
+version = "0.1.0"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
