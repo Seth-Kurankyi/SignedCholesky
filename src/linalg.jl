@@ -5,7 +5,6 @@
 # Linear algebra Utilities
 # -------------------------
 
-
 @inline function _check_success(F::SignedFactorization)
     F.info == 0 || throw(ArgumentError("factorization was not successful"))
 end
